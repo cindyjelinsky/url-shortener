@@ -2,6 +2,7 @@ package com.chjdev.urlshortener.controller;
 
 
 import com.chjdev.urlshortener.dto.CreateUrlRequest;
+import com.chjdev.urlshortener.dto.CreateUrlResponse;
 import com.chjdev.urlshortener.entity.UrlEntity;
 import com.chjdev.urlshortener.service.UrlShortenerService;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,12 @@ public class UrlShortenerController {
 
      public UrlShortenerController(UrlShortenerService urlShortenerService) {
          this.urlShortenerService = urlShortenerService;
+     }
+
+     @PostMapping
+     ResponseEntity<CreateUrlResponse> createUrl(@RequestBody CreateUrlRequest createUrlRequest) {
+            CreateUrlResponse response = urlShortenerService.createShortUrl(createUrlRequest);
+            return ResponseEntity.ok(response);
      }
 
 

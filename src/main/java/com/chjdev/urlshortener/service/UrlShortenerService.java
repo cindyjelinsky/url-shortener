@@ -1,9 +1,15 @@
 package com.chjdev.urlshortener.service;
 
+import com.chjdev.urlshortener.dto.CreateUrlRequest;
+import com.chjdev.urlshortener.dto.CreateUrlResponse;
+import com.chjdev.urlshortener.entity.UrlEntity;
 import com.chjdev.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Instant;
 
 @Service
 public class UrlShortenerService {
@@ -19,6 +25,22 @@ public class UrlShortenerService {
 
 
 
+
+   public CreateUrlResponse createShortUrl(CreateUrlRequest createUrlRequest) {
+
+        String shortCode = generateUniqueCode();
+
+       UrlEntity urlEntity = new UrlEntity();
+       urlEntity.setUrlOriginal(createUrlRequest.getUrl());
+       urlEntity.setCreatedAt(Instant.now());
+       urlEntity.setId(shortCode);
+       urlRepository.save(urlEntity);
+
+       String shortUrl = "http://localhost:8080/" + shortCode;
+
+       return  new CreateUrlResponse(shortUrl);
+
+   }
 
 
     private String generateUniqueCode(){
