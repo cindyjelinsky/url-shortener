@@ -5,11 +5,9 @@ import com.chjdev.urlshortener.dto.CreateUrlResponse;
 import com.chjdev.urlshortener.entity.UrlEntity;
 import com.chjdev.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class UrlShortenerService {
@@ -30,15 +28,29 @@ public class UrlShortenerService {
 
         String shortCode = generateUniqueCode();
 
+        String url = createUrlRequest.getUrl();
+       if (!url.startsWith("http://") && !url.startsWith("https://")) {
+           url = "https://" + url;
+       }
        UrlEntity urlEntity = new UrlEntity();
-       urlEntity.setUrlOriginal(createUrlRequest.getUrl());
+       urlEntity.setUrlOriginal(url);
        urlEntity.setCreatedAt(Instant.now());
        urlEntity.setId(shortCode);
+
+
        urlRepository.save(urlEntity);
 
        String shortUrl = "http://localhost:8080/" + shortCode;
 
        return  new CreateUrlResponse(shortUrl);
+
+   }
+
+   public String findByShortCode(String shortCode) {
+
+        return urlRepository.findById(shortCode)
+                .orElseThrow(()-> new RuntimeException("URL Not Found"))
+                .getUrlOriginal();
 
    }
 
