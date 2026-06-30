@@ -1,16 +1,19 @@
 package com.chjdev.urlshortener.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class CreateUrlResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegisterUserRequest {
 
-    private String shortUrl;
+    private String name;
+    private String password;
+    private String email;
 
 }
