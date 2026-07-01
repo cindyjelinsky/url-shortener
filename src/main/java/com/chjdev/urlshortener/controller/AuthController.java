@@ -1,6 +1,8 @@
 package com.chjdev.urlshortener.controller;
 
 
+import com.chjdev.urlshortener.dto.LoginRequest;
+import com.chjdev.urlshortener.dto.LoginResponse;
 import com.chjdev.urlshortener.dto.RegisterUserRequest;
 import com.chjdev.urlshortener.dto.RegisterUserResponse;
 import com.chjdev.urlshortener.service.AuthService;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 
-    private AuthService authService;
+    private final AuthService authService;
 
     public AuthController(AuthService authService) {
         this.authService = authService;
@@ -29,6 +31,15 @@ public class AuthController {
         RegisterUserResponse response = authService.registerUser(registerUserRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        LoginResponse response = authService.login(loginRequest);
+
+        return ResponseEntity.ok(response);
+
     }
 
 
